@@ -56,6 +56,6 @@ our sub tasks (%args) {
 
   # return altered PATH so that a user can start using installed Rakudo and zef
 
-  return "{$path-to-raku}:bin:/home/$user/.perl6/bin:/home/$user/.raku/bin"
+  return "{$path-to-raku}/bin:/home/$user/.perl6/bin:/home/$user/.raku/bin"
 
 }
