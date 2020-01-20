@@ -26,3 +26,14 @@ bash "perl6 --version", %(
 )
 
 ```
+
+# See also
+
+[Sparrow6 modules](https://github.com/melezhik/Sparrow6/blob/master/documentation/modules.md)
+
+
+# Author
+
+Alexey Melezhik
+
+
