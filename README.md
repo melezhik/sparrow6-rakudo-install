@@ -20,7 +20,6 @@ my $path = module-run 'Rakudo::Install', %(
 
 # Now you can use installed Rakudo
 
-
 bash "perl6 --version", %(
   envvar => %( PATH => "{%*ARGS<PATH>}:{$path}" ),
   user => $user 
