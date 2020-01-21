@@ -13,6 +13,8 @@ Inside your Sparrow scenario:
 ```
 user "test123";
 
+zef "https://github.com/melezhik/sparrow6-rakudo-install.git";
+
 my $path = module-run 'Rakudo::Install', %(
   user => 'test123',
   rakudo-version => '40b13322c503808235d9fec782d3767eb8edb899'
@@ -21,7 +23,12 @@ my $path = module-run 'Rakudo::Install', %(
 # Now you can use installed Rakudo
 
 bash "perl6 --version", %(
-  envvar => %( PATH => "{%*ARGS<PATH>}:{$path}" ),
+  envvar => %( PATH => "{%*ENV<PATH>}:{$path}" ),
+  user => "test123"
+)
+
+bash "zef --version", %(
+  envvar => %( PATH => "{%*ENV<PATH>}:{$path}" ),
   user => "test123"
 )
 
