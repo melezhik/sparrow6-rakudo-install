@@ -22,7 +22,7 @@ my $path = module-run 'Rakudo::Install', %(
 
 bash "perl6 --version", %(
   envvar => %( PATH => "{%*ARGS<PATH>}:{$path}" ),
-  user => $user 
+  user => "test123"
 )
 
 ```
