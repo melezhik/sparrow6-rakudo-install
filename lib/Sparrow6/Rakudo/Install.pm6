@@ -57,6 +57,23 @@ our sub tasks (%args) {
     debug => False
   );
 
+  # --------------------------- Set $user environment  ------------------------ #
+
+  say "Set user environment";
+
+  file "/home/$user/.rakudoenv.bash", %(
+    content => "export PATH={$path-to-raku}:~/.perl6/bin:~/.raku/bin/:\$PATH",
+    owner => $user,
+    group => $user
+  );
+  
+  bash "cat /home/$user/.rakudoenv.bash >> /home/$user/.bash_profile", %(
+    description => "patch user $user .bash_profile with rakudo env"
+  );
+  
+  file-delete "/home/$user/.rakudoenv.bash";
+  
+
   # --------------------------- Dump Rakudo environment  ------------------------ #
 
   say "Dump Rakudo environment";
@@ -86,8 +103,6 @@ our sub tasks (%args) {
   );
   
 
-  # return altered PATH so that a user can start using installed Rakudo and zef
-
-  return "{$path-to-raku}/bin:/home/$user/.perl6/bin:/home/$user/.raku/bin"
+  return
 
 }

@@ -15,20 +15,18 @@ user "test123";
 
 zef "https://github.com/melezhik/sparrow6-rakudo-install.git";
 
-my $path = module-run 'Rakudo::Install', %(
+module-run 'Rakudo::Install', %(
   user => 'test123',
   rakudo-version => '40b13322c503808235d9fec782d3767eb8edb899'
 );
 
-# Now you can use installed Rakudo
+# Now you can use installed Rakudo and Zef
 
 bash "perl6 --version", %(
-  envvar => %( PATH => "{%*ENV<PATH>}:{$path}" ),
   user => "test123"
 )
 
 bash "zef --version", %(
-  envvar => %( PATH => "{%*ENV<PATH>}:{$path}" ),
   user => "test123"
 )
 
