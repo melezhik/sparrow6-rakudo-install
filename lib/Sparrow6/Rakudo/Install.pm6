@@ -30,7 +30,7 @@ our sub tasks (%args) {
   
     file-delete "/home/$user/.rakudoenv.bash";
 
-    say "Installing Whateverable Rakudo is not supported on ", os(), " using default Rakudo";
+    say "... Installing Whateverable Rakudo is not supported on ", os(), " using default Rakudo ...";
 
     say "... Dump Rakudo environment ...";
   
@@ -123,7 +123,7 @@ our sub tasks (%args) {
 
   # --------------------------- Dump Rakudo environment  ------------------------ #
 
-  say "Dump Rakudo environment";
+  say "... Dump Rakudo environment ... ";
 
   bash "which perl6", %(
     description => "which perl6",
