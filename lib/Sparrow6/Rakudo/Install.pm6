@@ -61,9 +61,9 @@ our sub tasks (%args) {
   }
   
   # --------------------------- Install Rakudo $rakudo-version ------------------------ #
-  
-  say "Start Rakudo install, version {$rakudo-version}";
-  
+
+  say "<<< Rakudo Install, version {$rakudo-version} >>>";  
+
   package-install ('wget', 'zstd');
   
   directory "/data/whateverable/", %(
