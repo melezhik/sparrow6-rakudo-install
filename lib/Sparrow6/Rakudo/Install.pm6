@@ -51,7 +51,7 @@ our sub tasks (%args) {
   );
 
   
-  bash "cd {$path-to-zef} && {$path-to-raku}/bin/perl6 -I . bin/zef install .", %(
+  bash "cd {$path-to-zef} && {$path-to-raku}/bin/perl6 -I . bin/zef install . --/test", %(
     description => "Installing zef for user {$user}",
     user => $user,
     debug => False
