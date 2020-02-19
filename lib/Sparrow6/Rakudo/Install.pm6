@@ -12,6 +12,53 @@ our sub tasks (%args) {
   my $rakudo-version = %args<rakudo-version>;
   my $path-to-raku = "/tmp/whateverable/rakudo-moar/$rakudo-version";
   my $path-to-zef = "/home/$user/zef";
+
+
+  unless os() eq 'debian' {
+
+    say "Set user environment";
+
+    file "/home/$user/.rakudoenv.bash", %(
+      content => "export PATH=~/.perl6/bin:~/.raku/bin/:\$PATH",
+      owner => $user,
+      group => $user
+    );
+  
+    bash "cat /home/$user/.rakudoenv.bash >> /home/$user/.bash_profile", %(
+      description => "patch user $user .bash_profile with rakudo env"
+    );
+  
+    file-delete "/home/$user/.rakudoenv.bash";
+
+    say "Installing Whateverable Rakudo is not supported on ", os(), " using default Rakudo";
+
+    say "Dump Rakudo environment";
+  
+    bash "which perl6", %(
+      description => "which perl6",
+      user => $user,
+      debug => False
+    );
+    
+    bash "which zef", %(
+      description => "which zef",
+      user => $user,
+      debug => False
+    );
+    
+    bash "perl6 --version", %(
+      description => "perl6 version",
+      user => $user,
+      debug => False,
+    );
+    
+    bash "zef --version", %(
+      description => "zef version",
+      user => $user,
+      debug => False,
+    );
+    
+  }
   
   # --------------------------- Install Rakudo $rakudo-version ------------------------ #
   
@@ -102,7 +149,6 @@ our sub tasks (%args) {
     debug => False,
   );
   
-
   return
 
 }
