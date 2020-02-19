@@ -81,25 +81,25 @@ our sub tasks (%args) {
   bash "which perl6", %(
     description => "which perl6",
     user => $user,
-    debug => True
+    debug => False
   );
   
   bash "which zef", %(
     description => "which zef",
     user => $user,
-    debug => True
+    debug => False
   );
   
   bash "perl6 --version", %(
     description => "perl6 version",
     user => $user,
-    debug => True
+    debug => False,
   );
   
   bash "zef --version", %(
     description => "zef version",
     user => $user,
-    debug => True
+    debug => False,
   );
   
 
