@@ -16,7 +16,7 @@ our sub tasks (%args) {
 
   unless os() eq 'debian' {
 
-    say "Set user environment";
+    say "... Set user environment ...";
 
     file "/home/$user/.rakudoenv.bash", %(
       content => "export PATH=~/.perl6/bin:~/.raku/bin/:\$PATH",
@@ -32,7 +32,7 @@ our sub tasks (%args) {
 
     say "Installing Whateverable Rakudo is not supported on ", os(), " using default Rakudo";
 
-    say "Dump Rakudo environment";
+    say "... Dump Rakudo environment ...";
   
     bash "which perl6", %(
       description => "which perl6",
@@ -85,7 +85,7 @@ our sub tasks (%args) {
 
   # --------------------------- Install Zef ------------------------ #
 
-  say "Installing zef for {$user}";
+  say "... Installing zef for user ...";
   
   directory $path-to-zef, %(
     owner => $user
@@ -106,7 +106,7 @@ our sub tasks (%args) {
 
   # --------------------------- Set $user environment  ------------------------ #
 
-  say "Set user environment";
+  say "... Set user environment ...";
 
   file "/home/$user/.rakudoenv.bash", %(
     content => "export PATH={$path-to-raku}:~/.perl6/bin:~/.raku/bin/:\$PATH",
