@@ -36,6 +36,8 @@ our sub tasks (%args) {
   );
   
 
+  # --------------------------- Install Zef ------------------------ #
+
   say "Installing zef for {$user}";
   
   directory $path-to-zef, %(
@@ -52,8 +54,37 @@ our sub tasks (%args) {
   bash "cd {$path-to-zef} && {$path-to-raku}/bin/perl6 -I . bin/zef install .", %(
     description => "Installing zef for user {$user}",
     user => $user,
+    debug => False
+  );
+
+  # --------------------------- Dump Rakudo environment  ------------------------ #
+
+  say "Dump Rakudo environment";
+
+  bash "which perl6", %(
+    description => "which perl6",
+    user => $user,
     debug => True
   );
+  
+  bash "which zef", %(
+    description => "which zef",
+    user => $user,
+    debug => True
+  );
+  
+  bash "perl6 --version", %(
+    description => "perl6 version",
+    user => $user,
+    debug => True
+  );
+  
+  bash "zef --version", %(
+    description => "zef version",
+    user => $user,
+    debug => True
+  );
+  
 
   # return altered PATH so that a user can start using installed Rakudo and zef
 
