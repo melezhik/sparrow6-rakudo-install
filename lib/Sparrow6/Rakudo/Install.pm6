@@ -4,33 +4,9 @@ unit module Sparrow6::Rakudo::Install;
 
 use Sparrow6::DSL;
 
-our sub tasks (%args) {
 
-  # --------------------------- Variables -------------------------------------------- #
-  
-  my $user = %args<user>;
-  my $rakudo-version = %args<rakudo-version>;
-  my $path-to-raku = "/tmp/whateverable/rakudo-moar/$rakudo-version";
-  my $path-to-zef = "/home/$user/zef";
+sub dump-rakudo-env (Str $user) {
 
-
-  unless os() eq 'debian' {
-
-    say "... Set user environment ...";
-
-    file "/home/$user/.rakudoenv.bash", %(
-      content => "export PATH=~/.perl6/bin:~/.raku/bin/:\$PATH",
-      owner => $user,
-      group => $user
-    );
-  
-    bash "cat /home/$user/.rakudoenv.bash >> /home/$user/.bash_profile", %(
-      description => "patch user $user .bash_profile with rakudo env"
-    );
-  
-    file-delete "/home/$user/.rakudoenv.bash";
-
-    say "... Installing Whateverable Rakudo is not supported on ", os(), " using default Rakudo ...";
 
     say "... Dump Rakudo environment ...";
   
@@ -57,6 +33,64 @@ our sub tasks (%args) {
       user => $user,
       debug => False,
     );
+
+}
+
+sub set-user-env(Str $user, Str $path-to-raku?){
+
+  say "... Set user environment ...";
+
+  if ($path-to-raku) {
+
+    file "/home/$user/.rakudoenv.bash", %(
+      content => "export PATH={$path-to-raku}:~/.perl6/bin:~/.raku/bin/:\$PATH",
+      owner => $user,
+      group => $user
+    );
+
+  } else {
+
+    file "/home/$user/.rakudoenv.bash", %(
+      content => "export PATH=~/.perl6/bin:~/.raku/bin/:\$PATH",
+      owner => $user,
+      group => $user
+    );
+  
+  }
+
+  bash "cat /home/$user/.rakudoenv.bash >> /home/$user/.bash_profile", %(
+    description => "patch user $user .bash_profile with rakudo env"
+  );
+
+  file-delete "/home/$user/.rakudoenv.bash";
+
+}
+
+our sub tasks (%args) {
+
+  # --------------------------- Variables -------------------------------------------- #
+  
+  my $user = %args<user>;
+  my $rakudo-version = %args<rakudo-version>;
+  my $path-to-raku = "/tmp/whateverable/rakudo-moar/$rakudo-version";
+  my $path-to-zef = "/home/$user/zef";
+
+
+  if $rakudo-version eq "default" {
+
+    say "... Using default Rakudo ...";
+
+    set-user-env($user);
+
+    dump-rakudo-env($user);
+    
+  } elsif os() eq 'debian' {
+
+    say "... Installing Whateverable Rakudo is not supported on ", os(), " using default Rakudo ...";
+
+    set-user-env($user);
+
+    dump-rakudo-env($user);
     
   }
   
@@ -104,50 +138,13 @@ our sub tasks (%args) {
     debug => False
   );
 
-  # --------------------------- Set $user environment  ------------------------ #
 
-  say "... Set user environment ...";
 
-  file "/home/$user/.rakudoenv.bash", %(
-    content => "export PATH={$path-to-raku}:~/.perl6/bin:~/.raku/bin/:\$PATH",
-    owner => $user,
-    group => $user
-  );
-  
-  bash "cat /home/$user/.rakudoenv.bash >> /home/$user/.bash_profile", %(
-    description => "patch user $user .bash_profile with rakudo env"
-  );
-  
-  file-delete "/home/$user/.rakudoenv.bash";
-  
+  set-user-env($user);
 
-  # --------------------------- Dump Rakudo environment  ------------------------ #
 
-  say "... Dump Rakudo environment ... ";
+  dump-rakudo-env($user);
 
-  bash "which perl6", %(
-    description => "which perl6",
-    user => $user,
-    debug => False
-  );
-  
-  bash "which zef", %(
-    description => "which zef",
-    user => $user,
-    debug => False
-  );
-  
-  bash "perl6 --version", %(
-    description => "perl6 version",
-    user => $user,
-    debug => False,
-  );
-  
-  bash "zef --version", %(
-    description => "zef version",
-    user => $user,
-    debug => False,
-  );
   
   return
 
