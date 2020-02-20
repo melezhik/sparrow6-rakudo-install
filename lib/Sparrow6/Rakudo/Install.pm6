@@ -92,60 +92,64 @@ our sub tasks (%args) {
 
     dump-rakudo-env($user);
     
+  } else {
+
+  		# --------------------------- Install Rakudo $rakudo-version ------------------------ #
+		
+  		say "<<< Rakudo Install, version {$rakudo-version} >>>";  
+		
+  		package-install ('wget', 'zstd');
+  		
+  		directory "/data/whateverable/", %(
+    		mode => '755'
+  		);
+  		
+  		unless "/data/whateverable/{$rakudo-version}".IO ~~ :f {
+  		
+    		bash "cd /data/whateverable/ && wget -q https://whateverable.6lang.org/{$rakudo-version}", %(
+      		description => "download https://whateverable.6lang.org/{$rakudo-version}"
+    		)
+  		
+  		}
+  		
+  		bash "cd /data/whateverable/ && zstd -dqc -- $rakudo-version | tar -x --absolute-names", %(
+      		description => "unpack {$rakudo-version}"
+  		);
+  		
+		
+  		# --------------------------- Install Zef ------------------------ #
+		
+  		say "... Installing zef for user ...";
+  		
+  		directory $path-to-zef, %(
+    		owner => $user
+  		);
+  		
+  		
+  		git-scm "https://github.com/ugexe/zef.git", %(
+    		to => $path-to-zef,
+    		user => $user,
+  		);
+		
+  		
+  		bash "cd {$path-to-zef} && {$path-to-raku}/bin/perl6 -I . bin/zef install . --/test", %(
+    		description => "Installing zef for user {$user}",
+    		user => $user,
+    		debug => False
+  		);
+		
+		
+		
+  		set-user-env($user);
+		
+		
+  		dump-rakudo-env($user);
+
   }
   
-  # --------------------------- Install Rakudo $rakudo-version ------------------------ #
-
-  say "<<< Rakudo Install, version {$rakudo-version} >>>";  
-
-  package-install ('wget', 'zstd');
-  
-  directory "/data/whateverable/", %(
-    mode => '755'
-  );
-  
-  unless "/data/whateverable/{$rakudo-version}".IO ~~ :f {
-  
-    bash "cd /data/whateverable/ && wget -q https://whateverable.6lang.org/{$rakudo-version}", %(
-      description => "download https://whateverable.6lang.org/{$rakudo-version}"
-    )
-  
-  }
-  
-  bash "cd /data/whateverable/ && zstd -dqc -- $rakudo-version | tar -x --absolute-names", %(
-      description => "unpack {$rakudo-version}"
-  );
-  
-
-  # --------------------------- Install Zef ------------------------ #
-
-  say "... Installing zef for user ...";
-  
-  directory $path-to-zef, %(
-    owner => $user
-  );
-  
-  
-  git-scm "https://github.com/ugexe/zef.git", %(
-    to => $path-to-zef,
-    user => $user,
-  );
-
-  
-  bash "cd {$path-to-zef} && {$path-to-raku}/bin/perl6 -I . bin/zef install . --/test", %(
-    description => "Installing zef for user {$user}",
-    user => $user,
-    debug => False
-  );
-
-
-
-  set-user-env($user);
-
-
-  dump-rakudo-env($user);
 
   
   return
 
 }
+
