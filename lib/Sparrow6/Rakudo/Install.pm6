@@ -143,7 +143,7 @@ our sub tasks (%args) {
 		
 		
 		
-  		set-user-env($user);
+  		set-user-env($user, "{$path-to-raku}/bin/");
 		
 		
   		dump-rakudo-env($user);
