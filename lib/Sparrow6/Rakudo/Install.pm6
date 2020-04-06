@@ -96,12 +96,15 @@ our sub tasks (%args) {
 
   		# --------------------------- Install Rakudo $rakudo-version ------------------------ #
 		
-  		say "<<< Rakudo Install, version {$rakudo-version} >>>";  
+  		say "<<< Rakudo Install, version <{$rakudo-version}> >>>";  
 
-  		package-install ('epel-release') if os() ~~ /centos/;
+      unless %args<skip-install-dependencies> {
 
-  		package-install ('wget', 'zstd');
+  		  package-install ('epel-release') if os() ~~ /centos/;
+
+  		  package-install ('wget', 'zstd');
 		
+      }
   		
   		directory "/data/whateverable/", %(
     		mode => '755'

@@ -32,6 +32,20 @@ bash "zef --version", %(
 
 ```
 
+# Parameters 
+
+## user
+
+User to install
+
+## rakudo-version 
+
+Rakudo version, should full SHA, see [https://github.com/rakudo/rakudo/commits/](https://github.com/rakudo/rakudo/commits/)
+
+## skip-install-dependencies
+
+Don't install system dependencies (wget,zstd so on)
+
 # See also
 
 [Sparrow6 modules](https://github.com/melezhik/Sparrow6/blob/master/documentation/modules.md)
