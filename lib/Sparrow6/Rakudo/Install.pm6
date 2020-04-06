@@ -84,19 +84,19 @@ our sub tasks (%args) {
 
     dump-rakudo-env($user);
     
-  } elsif os() eq 'debian' {
+  #} elsif os() eq 'debian' {
 
-    say "... Installing Whateverable Rakudo is not supported on ", os(), " using default Rakudo ...";
+   # say "... Installing Whateverable Rakudo is not supported on ", os(), " using default Rakudo ...";
 
-    set-user-env($user);
+    #set-user-env($user);
 
-    dump-rakudo-env($user);
+    #dump-rakudo-env($user);
     
   } else {
 
   		# --------------------------- Install Rakudo $rakudo-version ------------------------ #
 		
-  		say "<<< Rakudo Install, version <{$rakudo-version}> >>>";  
+  		say "<<< Rakudo Install, version <{$rakudo-version}> os <{os()}> >>>";  
 
       unless %args<skip-install-dependencies> {
 
