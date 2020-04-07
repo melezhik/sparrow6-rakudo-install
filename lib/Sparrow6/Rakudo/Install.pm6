@@ -76,6 +76,8 @@ our sub tasks (%args) {
   my $path-to-zef = "/home/$user/zef";
 
 
+  task-run "install glibc", "alpine-glibc-install" if os() eq "alpine";
+
   if $rakudo-version eq "default" {
 
     say "... Using default Rakudo ...";
@@ -83,14 +85,6 @@ our sub tasks (%args) {
     set-user-env($user);
 
     dump-rakudo-env($user);
-    
-  #} elsif os() eq 'debian' {
-
-   # say "... Installing Whateverable Rakudo is not supported on ", os(), " using default Rakudo ...";
-
-    #set-user-env($user);
-
-    #dump-rakudo-env($user);
     
   } else {
 
