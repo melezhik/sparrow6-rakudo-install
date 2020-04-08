@@ -58,9 +58,20 @@ sub set-user-env(Str $user, Str $path-to-raku?){
   
   }
 
-  bash "cat /home/$user/.rakudoenv.bash >> /home/$user/.bash_profile", %(
-    description => "patch user $user .bash_profile with rakudo env"
-  );
+  if os() eq "alpine" {
+
+    bash "cat /home/$user/.rakudoenv.bash >> /home/$user/.profile", %(
+      description => "patch user $user .profile with rakudo env"
+    );
+
+  } else {
+
+    bash "cat /home/$user/.rakudoenv.bash >> /home/$user/.bash_profile", %(
+      description => "patch user $user .bash_profile with rakudo env"
+    );
+
+  }
+
 
   file-delete "/home/$user/.rakudoenv.bash";
 
