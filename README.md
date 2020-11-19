@@ -46,6 +46,10 @@ Rakudo version, should full SHA, see [https://github.com/rakudo/rakudo/commits/]
 
 Don't install system dependencies (wget,zstd so on)
 
+## skip-zef
+
+Don't install zef
+
 # See also
 
 [Sparrow6 modules](https://github.com/melezhik/Sparrow6/blob/master/documentation/modules.md)

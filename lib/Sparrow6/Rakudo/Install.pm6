@@ -112,52 +112,52 @@ our sub tasks (%args) {
       }
   		
   		directory "/data/whateverable/", %(
-    		mode => '755'
+        mode => '755'
   		);
-  		
+
   		unless "/data/whateverable/{$rakudo-version}".IO ~~ :f {
-  		
-    		bash "cd /data/whateverable/ && wget -q https://whateverable.6lang.org/{$rakudo-version}", %(
-      		description => "download https://whateverable.6lang.org/{$rakudo-version}"
+
+        bash "cd /data/whateverable/ && wget -q https://whateverable.6lang.org/{$rakudo-version}", %(
+      	  description => "download https://whateverable.6lang.org/{$rakudo-version}"
     		)
   		
   		}
   		
   		bash "cd /data/whateverable/ && zstd -dqc -- $rakudo-version | tar -x --absolute-names", %(
-      		description => "unpack {$rakudo-version}"
+        description => "unpack {$rakudo-version}"
   		);
   		
-		if $nstall-zef {
+		if $install-zef {
 		
-		  	# --------------------------- Install Zef ------------------------ #
+		  # --------------------------- Install Zef ------------------------ #
 		
 			say "... Installing zef for user ...";
 
 			directory $path-to-zef, %(
-			owner => $user
+			  owner => $user
 			);
 
 
 			git-scm "https://github.com/ugexe/zef.git", %(
-			to => $path-to-zef,
-			user => $user,
+			  to => $path-to-zef,
+			  user => $user,
 			);
 
 
 			bash "cd {$path-to-zef} && {$path-to-raku}/bin/perl6 -I . bin/zef install . --/test", %(
-			description => "Installing zef for user {$user}",
-			user => $user,
-			debug => False
+			  description => "Installing zef for user {$user}",
+			  user => $user,
+			  debug => False
 			);
 
 		} else {
 			say "skip-zef set to {%args<skip-zef>}, don't install zef ...";
 		}
 		
-  		set-user-env($user, "{$path-to-raku}/bin/");
+  	set-user-env($user, "{$path-to-raku}/bin/");
 		
 		
-  		dump-rakudo-env($user);
+  	dump-rakudo-env($user);
 
   }
   
