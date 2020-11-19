@@ -85,7 +85,7 @@ our sub tasks (%args) {
   my $rakudo-version = %args<rakudo-version>;
   my $path-to-raku = "/tmp/whateverable/rakudo-moar/$rakudo-version";
   my $path-to-zef = "/home/$user/zef";
-
+  my $install-zef = %args<skip-zef> ?? False !! True;
 
   task-run "install glibc", "alpine-glibc-install" if os() eq "alpine";
 
@@ -127,29 +127,32 @@ our sub tasks (%args) {
       		description => "unpack {$rakudo-version}"
   		);
   		
+		if $nstall-zef {
 		
-  		# --------------------------- Install Zef ------------------------ #
+		  	# --------------------------- Install Zef ------------------------ #
 		
-  		say "... Installing zef for user ...";
-  		
-  		directory $path-to-zef, %(
-    		owner => $user
-  		);
-  		
-  		
-  		git-scm "https://github.com/ugexe/zef.git", %(
-    		to => $path-to-zef,
-    		user => $user,
-  		);
-		
-  		
-  		bash "cd {$path-to-zef} && {$path-to-raku}/bin/perl6 -I . bin/zef install . --/test", %(
-    		description => "Installing zef for user {$user}",
-    		user => $user,
-    		debug => False
-  		);
-		
-		
+			say "... Installing zef for user ...";
+
+			directory $path-to-zef, %(
+			owner => $user
+			);
+
+
+			git-scm "https://github.com/ugexe/zef.git", %(
+			to => $path-to-zef,
+			user => $user,
+			);
+
+
+			bash "cd {$path-to-zef} && {$path-to-raku}/bin/perl6 -I . bin/zef install . --/test", %(
+			description => "Installing zef for user {$user}",
+			user => $user,
+			debug => False
+			);
+
+		} else {
+			say "skip-zef set to {%args<skip-zef>}, don't install zef ...";
+		}
 		
   		set-user-env($user, "{$path-to-raku}/bin/");
 		
