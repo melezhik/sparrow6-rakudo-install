@@ -4,9 +4,7 @@ unit module Sparrow6::Rakudo::Install;
 
 use Sparrow6::DSL;
 
-
 sub dump-rakudo-env (Str $user) {
-
 
     say "... Dump Rakudo environment ...";
   
@@ -36,13 +34,15 @@ sub dump-rakudo-env (Str $user) {
 
 }
 
-sub set-user-env(Str $user, Str $path-to-raku?){
+sub set-user-env(Str $user, Bool $patch-profile = True, Str $path-to-raku? ){
 
   say "... Set user environment ...";
 
+  my $home = %*ENV<HOME> // "/home/$user";
+
   if ($path-to-raku) {
 
-    file "/home/$user/.rakudoenv.bash", %(
+    file "$home/.rakudoenv.bash", %(
       content => "export PATH={$path-to-raku}:~/.perl6/bin:~/.raku/bin/:\$PATH",
       owner => $user,
       group => $user
@@ -50,7 +50,7 @@ sub set-user-env(Str $user, Str $path-to-raku?){
 
   } else {
 
-    file "/home/$user/.rakudoenv.bash", %(
+    file "$home/.rakudoenv.bash", %(
       content => "export PATH=~/.perl6/bin:~/.raku/bin/:\$PATH",
       owner => $user,
       group => $user
@@ -58,22 +58,32 @@ sub set-user-env(Str $user, Str $path-to-raku?){
   
   }
 
-  if os() eq "alpine" {
+  if $patch-profile {
 
-    bash "cat /home/$user/.rakudoenv.bash >> /home/$user/.profile", %(
-      description => "patch user $user .profile with rakudo env"
-    );
+    if os() eq "alpine" {
+
+      bash "cat $home/.rakudoenv.bash >> $home/.profile", %(
+        description => "patch user $user .profile with rakudo env"
+      );
+
+    } else {
+
+      bash "cat $home/.rakudoenv.bash >> $home/.bash_profile", %(
+        description => "patch user $user .bash_profile with rakudo env"
+      );
+
+    }
+
+
+    file-delete "$home/.rakudoenv.bash";
 
   } else {
 
-    bash "cat /home/$user/.rakudoenv.bash >> /home/$user/.bash_profile", %(
-      description => "patch user $user .bash_profile with rakudo env"
-    );
+    say "you are all set, to use new rakudo:";
+
+    say "$home/.rakudoenv.bash".IO.slurp;
 
   }
-
-
-  file-delete "/home/$user/.rakudoenv.bash";
 
 }
 
@@ -82,9 +92,10 @@ our sub tasks (%args) {
   # --------------------------- Variables -------------------------------------------- #
   
   my $user = %args<user>;
+  my $home = %*ENV<HOME> // "/home/$user";
   my $rakudo-version = %args<rakudo-version>;
   my $path-to-raku = "/tmp/whateverable/rakudo-moar/$rakudo-version";
-  my $path-to-zef = "/home/$user/zef";
+  my $path-to-zef = "$home/zef";
   my $install-zef = %args<skip-zef> ?? False !! True;
 
   task-run "install glibc", "alpine-glibc-install" if os() eq "alpine";
@@ -93,7 +104,7 @@ our sub tasks (%args) {
 
     say "... Using default Rakudo ...";
 
-    set-user-env($user);
+    set-user-env($user,%args<patch-profile>);
 
     dump-rakudo-env($user);
     
@@ -127,7 +138,7 @@ our sub tasks (%args) {
         description => "unpack {$rakudo-version}"
   		);
   		
-		if $install-zef {
+    if $install-zef {
 		
 		  # --------------------------- Install Zef ------------------------ #
 		
@@ -154,14 +165,11 @@ our sub tasks (%args) {
 			say "skip-zef set to {%args<skip-zef>}, don't install zef ...";
 		}
 		
-  	set-user-env($user, "{$path-to-raku}/bin/");
+  	set-user-env($user, %args<patch-profile>, "{$path-to-raku}/bin/");
 		
-		
-  	dump-rakudo-env($user);
+  	dump-rakudo-env($user) if %args<patch-profile>;
 
   }
-  
-
   
   return
 

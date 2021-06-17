@@ -22,7 +22,7 @@ module-run 'Rakudo::Install', %(
 
 # Now you can use installed Rakudo and Zef
 
-bash "perl6 --version", %(
+bash "raku --version", %(
   user => "test123"
 )
 
@@ -49,6 +49,10 @@ Don't install system dependencies (wget,zstd so on)
 ## skip-zef
 
 Don't install zef
+
+## patch-profile
+
+Patch user's bash profile. Optional, default value is `True`
 
 # See also
 
