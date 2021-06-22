@@ -8,8 +8,8 @@ sub dump-rakudo-env (Str $user) {
 
     say "... Dump Rakudo environment ...";
   
-    bash "which perl6", %(
-      description => "which perl6",
+    bash "which raku", %(
+      description => "which raku",
       user => $user,
       debug => False
     );
@@ -20,8 +20,8 @@ sub dump-rakudo-env (Str $user) {
       debug => False
     );
     
-    bash "perl6 --version", %(
-      description => "perl6 version",
+    bash "raku --version", %(
+      description => "raku version",
       user => $user,
       debug => False,
     );
@@ -74,14 +74,15 @@ sub set-user-env(Str $user, Bool $patch-profile = True, Str $path-to-raku? ){
 
     }
 
-
     file-delete "$home/.rakudoenv.bash";
 
   } else {
 
-    say "you are all set, to use new rakudo:";
+    say "new rakudo version is available at:";
 
-    say "$home/.rakudoenv.bash".IO.slurp;
+    bash ". $home/.rakudoenv.bash && which raku && raku --version", %(
+      description => "dump-rakudo-env"
+    );
 
   }
 
