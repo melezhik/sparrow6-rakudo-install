@@ -1,0 +1,8 @@
+Revision history for Sparrow6
+
+{{$NEXT}}
+
+0.0.2  2021-07-11T01:02:00Z
+
+    Drop support of perl6 (raku is searched in binaries)
+    patch-profile option

@@ -1,6 +1,6 @@
 use v6;
 
-unit module Sparrow6::Rakudo::Install;
+unit module Sparrow6::Rakudo::Install:ver<0.0.2>;
 
 use Sparrow6::DSL;
 
