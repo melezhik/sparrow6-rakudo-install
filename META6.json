@@ -12,7 +12,7 @@
   "name" : "Sparrow6::Rakudo::Install",
   "perl" : "6.*",
   "provides" : {
-    "Sparrow6::Rakudo::Install" : "lib/Sparrow6/Rakudo/Install.pm6"
+    "Sparrow6::Rakudo::Install" : "lib/Sparrow6/Rakudo/Install.rakumod"
   },
   "resources" : [
   ],
