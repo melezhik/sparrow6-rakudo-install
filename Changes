@@ -2,6 +2,11 @@ Revision history for Sparrow6
 
 {{$NEXT}}
 
+0.0.3  2025-11-10T01:02:00Z
+
+    Internal refactoring
+    (pm6->rakumod renaming, etc)
+
 0.0.2  2021-07-11T01:02:00Z
 
     Drop support of perl6 (raku is searched in binaries)
