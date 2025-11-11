@@ -2,7 +2,13 @@ Revision history for Sparrow6
 
 {{$NEXT}}
 
-0.0.3  2025-11-10T01:02:00Z
+
+0.0.4 2025-11-11T03:02:00Z
+
+    Install zef from tag
+    Fix meta6.json bug
+
+0.0.3 2025-11-10T01:02:00Z
 
     Internal refactoring
     (pm6->rakumod renaming, etc)

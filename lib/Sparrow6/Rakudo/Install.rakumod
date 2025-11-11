@@ -1,6 +1,6 @@
 use v6;
 
-unit module Sparrow6::Rakudo::Install:ver<0.0.3>;
+unit module Sparrow6::Rakudo::Install:ver<0.0.4>;
 
 use Sparrow6::DSL;
 
@@ -153,6 +153,7 @@ our sub tasks (%args) {
 			git-scm "https://github.com/ugexe/zef.git", %(
 			  to => $path-to-zef,
 			  user => $user,
+        branch => "tags/v1.0.0",
 			);
 
 
