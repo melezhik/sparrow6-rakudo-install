@@ -129,6 +129,8 @@ our sub tasks (%args) {
 
   		unless "/data/whateverable/{$rakudo-version}".IO ~~ :f {
 
+        say "download https://whateverable.6lang.org/{$rakudo-version} ...";
+
         bash "cd /data/whateverable/ && wget -q https://whateverable.6lang.org/{$rakudo-version}", %(
       	  description => "download https://whateverable.6lang.org/{$rakudo-version}"
     		)
